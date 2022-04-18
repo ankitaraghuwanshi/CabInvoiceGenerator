@@ -44,5 +44,16 @@ namespace CabInvoiceGenerator
             }
             return totalFare;
         }
+        public double InhancedInvoice(List<Rides> multirides)//uc3
+        {
+            foreach (Rides rides in multirides)
+            {
+                totalFare += TotalFareForSingleRide(rides);
+                numberOfRides += 1;
+
+            }
+            averagePerRide = totalFare / numberOfRides;
+            return totalFare;
+        }
     }
 }

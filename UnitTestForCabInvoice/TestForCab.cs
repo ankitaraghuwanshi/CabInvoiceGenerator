@@ -59,6 +59,22 @@ namespace UnitTestForCabInvoice
             Assert.AreEqual(43.0d, invoicegeneratorNormalRide.TotalFareForMltipleRide(rides));
 
         }
+        [Test]
+        public void ListOfRidesCalculateFare()//uc3
+        {
+            Rides rides_1 = new Rides(2, 2);
+            Rides rides_2 = new Rides(2, 1);
+
+            List<Rides> rides = new List<Rides>();
+            rides.Add(rides_1);
+            rides.Add(rides_2);
+
+
+            Assert.AreEqual(43.0d, invoicegeneratorNormalRide.InhancedInvoice(rides));
+            Assert.AreEqual(21.5d, invoicegeneratorNormalRide.averagePerRide);
+            Assert.AreEqual(2, invoicegeneratorNormalRide.numberOfRides);
+
+        }
     }
 }
 
