@@ -101,6 +101,52 @@ namespace UnitTestForCabInvoice
             Assert.AreEqual(Exception.type, CabInvoiceException.ExcepionType.Invaild_user_id);
 
         }
+        // UC 5.1 
+
+        [Test]
+        [TestCase(6, 5)]
+        public void Given_DistanceAndTime_CalculatePremiumFare(double distance, double time)
+        {
+            Rides rides = new Rides(distance, time);
+            int expected = 100;
+            Assert.AreEqual(expected, invoicegeneratorNormalRide.TotalFareForPremiumSingleRide(rides));
+        }
+
+        // TC 5.2 
+
+        [Test]
+        public void Given_InvalidDistance_ThrowsException()
+        {
+            Rides rides = new Rides(-1, 1);
+
+            CabInvoiceException cabInvoiceException = Assert.Throws<CabInvoiceException>(() => invoicegeneratorNormalRide.TotalFareForSingleRide(rides));
+            Assert.AreEqual(cabInvoiceException.type, CabInvoiceException.ExcepionType.Invalid_Distance);
+
+        }
+
+        // TC 5.3 
+        [Test]
+        public void Given_InvalidTime_ThrowsException()
+        {
+            Rides rides = new Rides(3, -6);
+            CabInvoiceException cabInvoiceException = Assert.Throws<CabInvoiceException>(() => invoicegeneratorNormalRide.TotalFareForSingleRide(rides));
+            Assert.AreEqual(cabInvoiceException.type, CabInvoiceException.ExcepionType.Invalid_Time);
+
+        }
+
+        // TC 5.4 
+
+        [Test]
+        public void Given_DistanceAndTime_CalculteFareForPremiumMultipleRide()
+        {
+            Rides rideOne = new Rides(6, 5);
+            Rides rideTwo = new Rides(7, 6);
+            List<Rides> rides = new List<Rides>();
+            rides.Add(rideOne);
+            rides.Add(rideTwo);
+
+            Assert.AreEqual(217.0d, invoicegeneratorNormalRide.TotalFareForPremiumMultipleRide(rides));
+        }
     }
 }
 
