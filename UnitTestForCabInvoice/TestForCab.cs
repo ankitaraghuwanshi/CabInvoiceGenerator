@@ -11,13 +11,13 @@ namespace UnitTestForCabInvoice
     public class Tests
     {
         Invoicegenerator invoicegeneratorNormalRide;
-
+        RideRepo rideRepo;
 
         [SetUp]
         public void Setup()
         {
             invoicegeneratorNormalRide = new Invoicegenerator();
-
+            rideRepo = new RideRepo();
         }
 
         [Test]
@@ -73,6 +73,32 @@ namespace UnitTestForCabInvoice
             Assert.AreEqual(43.0d, invoicegeneratorNormalRide.InhancedInvoice(rides));
             Assert.AreEqual(21.5d, invoicegeneratorNormalRide.averagePerRide);
             Assert.AreEqual(2, invoicegeneratorNormalRide.numberOfRides);
+
+        }
+        [Test]
+        public void ValidUserIdInvoice()//uc4
+        {
+            Rides rides_1 = new Rides(2, 2);
+            Rides rides_2 = new Rides(2, 1);
+
+            rideRepo.AddRideRepo("abc", rides_1);
+            rideRepo.AddRideRepo("abc", rides_2);
+
+            Assert.AreEqual(43.0d, invoicegeneratorNormalRide.InhancedInvoice(rideRepo.returnListByUserId("abc")));
+            Assert.AreEqual(21.5d, invoicegeneratorNormalRide.averagePerRide);
+            Assert.AreEqual(2, invoicegeneratorNormalRide.numberOfRides);
+        }
+        [Test]
+        public void InvaidUserIdInvioce()
+        {
+            Rides rides_1 = new Rides(3, 2);
+            Rides rides_2 = new Rides(2, 1);
+
+            rideRepo.AddRideRepo("abc", rides_1);
+            rideRepo.AddRideRepo("abc", rides_2);
+
+            var Exception = Assert.Throws<CabInvoiceException>(() => invoicegeneratorNormalRide.TotalFareForMltipleRide(rideRepo.returnListByUserId("xyz")));
+            Assert.AreEqual(Exception.type, CabInvoiceException.ExcepionType.Invaild_user_id);
 
         }
     }

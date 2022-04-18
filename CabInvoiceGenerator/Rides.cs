@@ -11,10 +11,10 @@ namespace CabInvoiceGenerator
         public double distance;
         public double time;
 
-        public Rides(double distnce,double time)
+        public Rides(double distnce, double time)
         {
-           this.distance = distnce;
-           this.time = time;
+            this.distance = distnce;
+            this.time = time;
         }
 
     }
